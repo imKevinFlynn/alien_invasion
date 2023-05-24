@@ -31,6 +31,7 @@ class AlienInvasion:
             self.ship.update()
             self.bullets.update()
             self._update_bullets()
+            self._update_aliens()
             #print(len(self.bullets)) #проверка для удаления снарядов
             self._update_screen()
 
@@ -70,11 +71,16 @@ class AlienInvasion:
             self.bullets.add(new_bullet)
 
     def _update_bullets(self):
+        # обновление снарядов
         self.bullets.update()
         # удаление снарядов, вышедших за край экрана для освобождения памяти.
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        # При обнаружении попадания rect снаряда с rect пришельца
+        # удаляет снаряд и пришельца.
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
 
     def _create_fleet(self):
         """Создание флота вторжения."""
@@ -107,6 +113,24 @@ class AlienInvasion:
         alien.rect.x = alien.x
         alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
+
+    def _check_fleet_edges(self):
+        """Проверяет достижение пришельцев края экрана."""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Опускает весь флот и меняет его направление."""
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
+
+    def _update_aliens(self):
+        """Обновляет позиции пришельцев."""
+        self._check_fleet_edges()
+        self.aliens.update()
 
     def _update_screen(self):
         # При каждом проходе цикла обновляется изображение на экране.

@@ -8,9 +8,17 @@ class Settings:
         self.screen_width = 1000
         self.screen_height = 800
         self.bg_color = (134, 143, 175)  # цвет фона
-        self.ship_speed = 1.5  # скорость корабля
+
+        # настройки пришельцев
+        self.alien_speed = 1.5  # скорость пришельцев
+        self.fleet_drop_speed = 10  # уменьшение высоты флота при достижении края экрана.
+        self.fleet_direction = 1  # (значение 1 это движение пришельцев право, -1 влево)
+
+        # скорость корабля
+        self.ship_speed = 2
+
         # параметры снарядов корабля
-        self.bullet_speed = 0.95
+        self.bullet_speed = 1
         self.bullet_width = 3
         self.bullet_height = 15
         self.bullets_allowed = 3
