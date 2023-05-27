@@ -34,7 +34,11 @@ class Ship:
         # Обновление атрибута rect на основании self.x.
         self.rect.x = self.x
 
-
     def blitme(self):
         """Выводит изображение корабля на экран в текущей позиции."""
         self.screen.blit(self.image, self.rect)
+
+    def center_ship(self):
+        """Размещает корабль внизу по центру."""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
